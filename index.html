@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,232 +7,105 @@
 
 <style>
 body{
-    margin:0;
-    font-family:Inter, Arial;
-    background:#0b0f14;
-    color:#fff;
+margin:0;
+font-family:Arial;
+background:#0b0f14;
+color:#fff;
 }
 
 /* LIVE BAR */
-.live-bar{
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    background:linear-gradient(90deg,#b30000,#ff2a2a);
-    padding:10px 16px;
-    display:flex;
-    justify-content:space-between;
-    font-weight:700;
-    z-index:999;
-}
-
-.dot{
-    width:8px;
-    height:8px;
-    background:#fff;
-    border-radius:50%;
-    display:inline-block;
-    margin-right:8px;
-    animation:blink 1s infinite;
-}
-
-@keyframes blink{
-    50%{opacity:0.2}
+.live{
+position:fixed;
+top:0;
+width:100%;
+background:#c40000;
+padding:10px 16px;
+font-weight:bold;
+z-index:999;
 }
 
 /* HEADER */
 header{
-    padding:80px 40px 20px;
-    border-bottom:1px solid #1f2a37;
+padding:80px 40px 20px;
+border-bottom:1px solid #222;
 }
 
-header h1{
-    margin:0;
-    font-size:34px;
+header h1{margin:0;}
+
+/* DATE */
+.date{
+padding:20px 40px;
+color:#00d4ff;
+font-weight:bold;
 }
 
-header p{
-    color:#9aa4b2;
-}
-
-/* SEARCH */
-.search{
-    padding:20px 40px;
-}
-
-.search input{
-    width:100%;
-    padding:14px;
-    border-radius:10px;
-    border:1px solid #223041;
-    background:#111827;
-    color:#fff;
-}
-
-/* DATE BLOCK */
-.date-title{
-    padding:20px 40px 10px;
-    color:#00d4ff;
-    font-weight:700;
-}
-
-/* FIXTURE ROW */
+/* MATCH ROW */
 .row{
-    display:grid;
-    grid-template-columns:90px 1fr 60px 1fr 150px 200px;
-    padding:12px 40px;
-    border-bottom:1px solid #1c2733;
-    align-items:center;
-}
-
-.group{
-    color:#ffcc00;
-    font-size:11px;
+display:grid;
+grid-template-columns:90px 1fr 60px 1fr 160px 200px;
+padding:12px 40px;
+border-bottom:1px solid #1c1c1c;
+align-items:center;
 }
 
 .team{
-    display:flex;
-    align-items:center;
-    gap:8px;
+display:flex;
+gap:8px;
+align-items:center;
 }
 
-.team img{
-    width:20px;
-    height:14px;
-}
+.team img{width:20px;}
 
-.vs{
-    text-align:center;
-    color:#8892a0;
-}
+.vs{text-align:center;color:#aaa;}
+.time{text-align:center;color:#00d4ff;}
+.venue{color:#aaa;font-size:13px;}
 
-.time{
-    color:#00d4ff;
-    text-align:center;
-}
+.group{color:#ffcc00;font-size:11px;}
 
-.venue{
-    color:#9aa4b2;
-    font-size:13px;
-}
-
-/* MOBILE */
 @media(max-width:900px){
-    .row{
-        grid-template-columns:1fr;
-        gap:6px;
-    }
+.row{grid-template-columns:1fr;}
 }
 </style>
 </head>
 
 <body>
 
-<div class="live-bar">
-<div><span class="dot"></span> LIVE • FIFA WORLD CUP 2026 DASHBOARD</div>
-<div>Group Stage Auto Generator</div>
-</div>
+<div class="live">🔴 FIFA WORLD CUP 2026 • LIVE DASHBOARD ENGINE</div>
 
 <header>
-<h1>FIFA WORLD CUP 2026</h1>
-<p>Fully automatic fixture engine • Groups A–L • Dynamic rendering</p>
+<h1>FIFA 2026 FIXTURE DASHBOARD</h1>
+<p>Correct rendering system (plug in official FIFA data)</p>
 </header>
-
-<div class="search">
-<input id="search" placeholder="Search team, group, venue, date...">
-</div>
 
 <div id="app"></div>
 
 <script>
 
-/* ===============================
-   1. CORE TEAM DATA (GROUPS)
-   =============================== */
+/* ======================================================
+   ⚠️ IMPORTANT:
+   Replace ONLY this array with official FIFA fixtures
+   ====================================================== */
 
-const groups = {
-"A":[["Mexico","mx"],["South Africa","za"],["Canada","ca"],["Korea Republic","kr"]],
-"B":[["USA","us"],["Morocco","ma"],["Switzerland","ch"],["Qatar","qa"]],
-"C":[["Brazil","br"],["Scotland","gb-sct"],["Haiti","ht"],["Morocco","ma"]],
-"D":[["Argentina","ar"],["Japan","jp"],["USA","us"],["Paraguay","py"]],
-"E":[["Germany","de"],["Côte d'Ivoire","ci"],["Ecuador","ec"],["Curaçao","cw"]],
-"F":[["France","fr"],["Nigeria","ng"],["Netherlands","nl"],["Japan","jp"]],
-"G":[["Spain","es"],["Egypt","eg"],["Belgium","be"],["Iran","ir"]],
-"H":[["Portugal","pt"],["Uruguay","uy"],["Croatia","hr"],["Saudi Arabia","sa"]],
-"I":[["England","gb-eng"],["Korea Republic","kr"],["Denmark","dk"],["Tunisia","tn"]],
-"J":[["Italy","it"],["Austria","at"],["Colombia","co"],["Algeria","dz"]],
-"K":[["Argentina","ar"],["Poland","pl"],["Chile","cl"],["Canada","ca"]],
-"L":[["Brazil","br"],["Senegal","sn"],["Sweden","se"],["Australia","au"]]
-};
+const FIXTURES = [
+/*
+FORMAT REQUIRED:
 
-/* ===============================
-   2. AUTO FIXTURE GENERATOR
-   (round-robin style)
-   =============================== */
-
-const venues = [
-"MetLife Stadium, New York",
-"SoFi Stadium, Los Angeles",
-"AT&T Stadium, Dallas",
-"BC Place, Vancouver",
-"BMO Field, Toronto",
-"Estadio Azteca, Mexico City"
+{
+date:"2026-06-11",
+group:"A",
+home:"Mexico",
+homeCode:"mx",
+away:"South Africa",
+awayCode:"za",
+time:"18:00",
+venue:"Estadio Azteca"
+}
+*/
 ];
 
-const times = ["18:00","21:00"];
-
-/* create all matches */
-function generateFixtures(){
-
-let output = [];
-
-let startDate = new Date("2026-06-11");
-
-let venueIndex = 0;
-
-for(let g in groups){
-
-let teams = groups[g];
-
-let matches = [];
-
-/* round robin */
-for(let i=0;i<teams.length;i++){
-for(let j=i+1;j<teams.length;j++){
-
-let date = new Date(startDate);
-date.setDate(startDate.getDate() + output.length);
-
-matches.push({
-group:g,
-home:teams[i][0],
-homeCode:teams[i][1],
-away:teams[j][0],
-awayCode:teams[j][1],
-date:date.toISOString().split("T")[0],
-time:times[(i+j)%2],
-venue:venues[venueIndex % venues.length]
-});
-
-venueIndex++;
-}
-}
-
-output.push(...matches);
-}
-
-return output;
-}
-
-const fixtures = generateFixtures();
-
-/* ===============================
-   3. GROUP BY DATE
-   =============================== */
-
-function groupByDate(data){
-let map = {};
+/* GROUP BY DATE */
+function group(data){
+let map={};
 data.forEach(m=>{
 if(!map[m.date]) map[m.date]=[];
 map[m.date].push(m);
@@ -241,24 +113,19 @@ map[m.date].push(m);
 return map;
 }
 
-const grouped = groupByDate(fixtures);
+/* RENDER */
+function render(data){
 
-/* ===============================
-   4. RENDER
-   =============================== */
+let app=document.getElementById("app");
+app.innerHTML="";
 
-function render(list){
+Object.keys(data).sort().forEach(date=>{
 
-let app = document.getElementById("app");
-app.innerHTML = "";
+let html=`<div class="date">📅 ${date}</div>`;
 
-Object.keys(list).sort().forEach(date=>{
+data[date].forEach(m=>{
 
-let html = `<div class="date-title">📅 ${date}</div>`;
-
-list[date].forEach(m=>{
-
-html += `
+html+=`
 <div class="row">
 
 <div class="group">Group ${m.group}</div>
@@ -283,25 +150,12 @@ ${m.away}
 `;
 });
 
-app.innerHTML += html;
+app.innerHTML+=html;
 });
 }
 
-render(grouped);
-
-/* ===============================
-   5. SEARCH
-   =============================== */
-
-document.getElementById("search").addEventListener("input",e=>{
-let q = e.target.value.toLowerCase();
-
-document.querySelectorAll(".row").forEach(r=>{
-r.style.display = r.innerText.toLowerCase().includes(q)
-? "grid"
-: "none";
-});
-});
+/* INIT */
+render(group(FIXTURES));
 
 </script>
 
