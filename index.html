@@ -1,127 +1,307 @@
-<!-- NOTE: FULL COMPLETE STRUCTURE VERSION -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FIFA 2026 Fixtures</title>
+<title>FIFA 2026 Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;font-family:Arial;background:#0b0f14;color:#fff}
-header{padding:80px 40px 20px;border-bottom:1px solid #222}
-header h1{margin:0}
-.live{position:fixed;top:0;width:100%;background:#b30000;color:#fff;padding:10px 20px;font-weight:bold;z-index:999}
-.date{padding:20px 40px;color:#00d4ff;font-weight:bold}
-.match{display:grid;grid-template-columns:80px 1fr 60px 1fr 220px;padding:12px 40px;border-bottom:1px solid #1c1c1c;align-items:center}
-.team{display:flex;gap:10px;align-items:center}
-.team img{width:20px}
-.time{color:#00d4ff;text-align:center}
-.vs{text-align:center;color:#aaa}
-.venue{color:#aaa;font-size:13px}
-.group{color:#ffcc00;font-size:11px}
+body{
+    margin:0;
+    font-family:Inter, Arial;
+    background:#0b0f14;
+    color:#fff;
+}
+
+/* LIVE BAR */
+.live-bar{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    background:linear-gradient(90deg,#b30000,#ff2a2a);
+    padding:10px 16px;
+    display:flex;
+    justify-content:space-between;
+    font-weight:700;
+    z-index:999;
+}
+
+.dot{
+    width:8px;
+    height:8px;
+    background:#fff;
+    border-radius:50%;
+    display:inline-block;
+    margin-right:8px;
+    animation:blink 1s infinite;
+}
+
+@keyframes blink{
+    50%{opacity:0.2}
+}
+
+/* HEADER */
+header{
+    padding:80px 40px 20px;
+    border-bottom:1px solid #1f2a37;
+}
+
+header h1{
+    margin:0;
+    font-size:34px;
+}
+
+header p{
+    color:#9aa4b2;
+}
+
+/* SEARCH */
+.search{
+    padding:20px 40px;
+}
+
+.search input{
+    width:100%;
+    padding:14px;
+    border-radius:10px;
+    border:1px solid #223041;
+    background:#111827;
+    color:#fff;
+}
+
+/* DATE BLOCK */
+.date-title{
+    padding:20px 40px 10px;
+    color:#00d4ff;
+    font-weight:700;
+}
+
+/* FIXTURE ROW */
+.row{
+    display:grid;
+    grid-template-columns:90px 1fr 60px 1fr 150px 200px;
+    padding:12px 40px;
+    border-bottom:1px solid #1c2733;
+    align-items:center;
+}
+
+.group{
+    color:#ffcc00;
+    font-size:11px;
+}
+
+.team{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.team img{
+    width:20px;
+    height:14px;
+}
+
+.vs{
+    text-align:center;
+    color:#8892a0;
+}
+
+.time{
+    color:#00d4ff;
+    text-align:center;
+}
+
+.venue{
+    color:#9aa4b2;
+    font-size:13px;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+    .row{
+        grid-template-columns:1fr;
+        gap:6px;
+    }
+}
 </style>
 </head>
 
 <body>
 
-<div class="live">🔴 LIVE • FIFA WORLD CUP 2026 FIXTURES</div>
+<div class="live-bar">
+<div><span class="dot"></span> LIVE • FIFA WORLD CUP 2026 DASHBOARD</div>
+<div>Group Stage Auto Generator</div>
+</div>
 
 <header>
 <h1>FIFA WORLD CUP 2026</h1>
-<p>Complete Group Stage Fixtures (All 12 Groups)</p>
+<p>Fully automatic fixture engine • Groups A–L • Dynamic rendering</p>
 </header>
+
+<div class="search">
+<input id="search" placeholder="Search team, group, venue, date...">
+</div>
 
 <div id="app"></div>
 
 <script>
 
-const data = [
+/* ===============================
+   1. CORE TEAM DATA (GROUPS)
+   =============================== */
 
-{
-date:"2026-06-11",
-matches:[
-["A","Mexico","mx","South Africa","za","18:00","Estadio Azteca"],
-["B","USA","us","Morocco","ma","21:00","SoFi Stadium"]
-]
-},
+const groups = {
+"A":[["Mexico","mx"],["South Africa","za"],["Canada","ca"],["Korea Republic","kr"]],
+"B":[["USA","us"],["Morocco","ma"],["Switzerland","ch"],["Qatar","qa"]],
+"C":[["Brazil","br"],["Scotland","gb-sct"],["Haiti","ht"],["Morocco","ma"]],
+"D":[["Argentina","ar"],["Japan","jp"],["USA","us"],["Paraguay","py"]],
+"E":[["Germany","de"],["Côte d'Ivoire","ci"],["Ecuador","ec"],["Curaçao","cw"]],
+"F":[["France","fr"],["Nigeria","ng"],["Netherlands","nl"],["Japan","jp"]],
+"G":[["Spain","es"],["Egypt","eg"],["Belgium","be"],["Iran","ir"]],
+"H":[["Portugal","pt"],["Uruguay","uy"],["Croatia","hr"],["Saudi Arabia","sa"]],
+"I":[["England","gb-eng"],["Korea Republic","kr"],["Denmark","dk"],["Tunisia","tn"]],
+"J":[["Italy","it"],["Austria","at"],["Colombia","co"],["Algeria","dz"]],
+"K":[["Argentina","ar"],["Poland","pl"],["Chile","cl"],["Canada","ca"]],
+"L":[["Brazil","br"],["Senegal","sn"],["Sweden","se"],["Australia","au"]]
+};
 
-{
-date:"2026-06-12",
-matches:[
-["C","Brazil","br","Scotland","gb-sct","18:00","MetLife Stadium"],
-["D","Argentina","ar","Japan","jp","21:00","AT&T Stadium"]
-]
-},
+/* ===============================
+   2. AUTO FIXTURE GENERATOR
+   (round-robin style)
+   =============================== */
 
-{
-date:"2026-06-13",
-matches:[
-["E","Germany","de","Côte d'Ivoire","ci","18:00","Lumen Field"],
-["F","France","fr","Nigeria","ng","21:00","NRG Stadium"]
-]
-},
-
-{
-date:"2026-06-14",
-matches:[
-["G","Spain","es","Egypt","eg","18:00","Hard Rock Stadium"],
-["H","Portugal","pt","Uruguay","uy","21:00","Allegiant Stadium"]
-]
-},
-
-{
-date:"2026-06-15",
-matches:[
-["I","Netherlands","nl","Senegal","sn","18:00","SoFi Stadium"],
-["J","England","gb-eng","Korea Republic","kr","21:00","MetLife Stadium"]
-]
-},
-
-{
-date:"2026-06-16",
-matches:[
-["K","Belgium","be","Ecuador","ec","18:00","BC Place"],
-["L","Croatia","hr","Australia","au","21:00","BMO Field"]
-]
-}
-
+const venues = [
+"MetLife Stadium, New York",
+"SoFi Stadium, Los Angeles",
+"AT&T Stadium, Dallas",
+"BC Place, Vancouver",
+"BMO Field, Toronto",
+"Estadio Azteca, Mexico City"
 ];
 
-function render(){
-let app=document.getElementById("app");
-app.innerHTML="";
+const times = ["18:00","21:00"];
 
-data.forEach(day=>{
-let html=`<div class="date">📅 ${day.date}</div>`;
+/* create all matches */
+function generateFixtures(){
 
-day.matches.forEach(m=>{
-html+=`
-<div class="match">
+let output = [];
 
-<div class="group">Group ${m[0]}</div>
+let startDate = new Date("2026-06-11");
+
+let venueIndex = 0;
+
+for(let g in groups){
+
+let teams = groups[g];
+
+let matches = [];
+
+/* round robin */
+for(let i=0;i<teams.length;i++){
+for(let j=i+1;j<teams.length;j++){
+
+let date = new Date(startDate);
+date.setDate(startDate.getDate() + output.length);
+
+matches.push({
+group:g,
+home:teams[i][0],
+homeCode:teams[i][1],
+away:teams[j][0],
+awayCode:teams[j][1],
+date:date.toISOString().split("T")[0],
+time:times[(i+j)%2],
+venue:venues[venueIndex % venues.length]
+});
+
+venueIndex++;
+}
+}
+
+output.push(...matches);
+}
+
+return output;
+}
+
+const fixtures = generateFixtures();
+
+/* ===============================
+   3. GROUP BY DATE
+   =============================== */
+
+function groupByDate(data){
+let map = {};
+data.forEach(m=>{
+if(!map[m.date]) map[m.date]=[];
+map[m.date].push(m);
+});
+return map;
+}
+
+const grouped = groupByDate(fixtures);
+
+/* ===============================
+   4. RENDER
+   =============================== */
+
+function render(list){
+
+let app = document.getElementById("app");
+app.innerHTML = "";
+
+Object.keys(list).sort().forEach(date=>{
+
+let html = `<div class="date-title">📅 ${date}</div>`;
+
+list[date].forEach(m=>{
+
+html += `
+<div class="row">
+
+<div class="group">Group ${m.group}</div>
 
 <div class="team">
-<img src="https://flagcdn.com/w20/${m[2]}.png">
-${m[1]}
+<img src="https://flagcdn.com/w20/${m.homeCode}.png">
+${m.home}
 </div>
 
 <div class="vs">VS</div>
 
 <div class="team">
-<img src="https://flagcdn.com/w20/${m[4]}.png">
-${m[3]}
+<img src="https://flagcdn.com/w20/${m.awayCode}.png">
+${m.away}
 </div>
 
-<div class="time">${m[5]} • ${m[6]}</div>
+<div class="time">${m.time}</div>
 
-</div>`;
+<div class="venue">${m.venue}</div>
+
+</div>
+`;
 });
 
-app.innerHTML+=html;
+app.innerHTML += html;
 });
 }
 
-render();
+render(grouped);
+
+/* ===============================
+   5. SEARCH
+   =============================== */
+
+document.getElementById("search").addEventListener("input",e=>{
+let q = e.target.value.toLowerCase();
+
+document.querySelectorAll(".row").forEach(r=>{
+r.style.display = r.innerText.toLowerCase().includes(q)
+? "grid"
+: "none";
+});
+});
 
 </script>
 
