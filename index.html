@@ -2,131 +2,176 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FIFA World Cup 2026 - Fixtures</title>
+<title>FIFA World Cup 2026 | Fixtures Hub</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body{
-    margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background:#0a0a0a;
-    color:#fff;
+:root{
+    --bg:#0b0f14;
+    --panel:#0f1620;
+    --line:#1e2a38;
+    --accent:#00d4ff;
+    --gold:#ffcc00;
+    --text:#e8edf2;
+    --muted:#8aa0b6;
 }
 
-/* LIVE BAR */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Inter, Arial, sans-serif;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+}
+
+/* ===== LIVE BAR ===== */
 .live-bar{
     position:fixed;
     top:0;
     left:0;
     right:0;
-    background:#b30000;
+    background:linear-gradient(90deg,#b30000,#ff1e1e);
     color:#fff;
-    padding:10px 20px;
-    font-weight:bold;
+    padding:10px 18px;
     display:flex;
     justify-content:space-between;
-    z-index:1000;
+    align-items:center;
+    font-weight:600;
+    z-index:9999;
+    box-shadow:0 4px 20px rgba(0,0,0,0.5);
 }
 
 .live-dot{
-    height:10px;
-    width:10px;
-    background:#ff0000;
+    width:8px;
+    height:8px;
+    background:#fff;
     border-radius:50%;
     display:inline-block;
     margin-right:8px;
-    animation:blink 1s infinite;
+    animation:pulse 1s infinite;
 }
 
-@keyframes blink{
+@keyframes pulse{
     0%,100%{opacity:1}
-    50%{opacity:0.3}
+    50%{opacity:.3}
 }
 
+/* ===== HEADER ===== */
 header{
-    padding:70px 40px 20px;
-    border-bottom:2px solid #ffcc00;
+    padding:90px 40px 25px;
+    background:
+        radial-gradient(circle at top,#13202e,#0b0f14);
+    border-bottom:1px solid var(--line);
 }
 
 header h1{
-    margin:0;
-    font-size:32px;
+    font-size:34px;
+    font-weight:700;
+    letter-spacing:1px;
 }
 
 header p{
-    color:#aaa;
+    color:var(--muted);
+    margin-top:6px;
 }
 
+/* ===== SEARCH ===== */
 .search{
     padding:20px 40px;
 }
 
 .search input{
     width:100%;
-    padding:14px;
-    background:#111;
-    border:1px solid #333;
+    padding:14px 16px;
+    background:var(--panel);
+    border:1px solid var(--line);
     color:#fff;
-    font-size:16px;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
 }
 
-/* DATE SECTION */
+/* ===== DATE SECTION ===== */
 .date-section{
-    padding:10px 40px 0;
+    padding:10px 40px;
 }
 
 .date-title{
-    color:#00d4ff;
-    font-size:18px;
-    margin:30px 0 10px;
-    border-left:4px solid #00d4ff;
-    padding-left:10px;
+    margin:25px 0 10px;
+    font-size:15px;
+    color:var(--accent);
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-/* FIXTURE ROW */
+/* ===== FIXTURE ROW ===== */
 .fixture{
     display:grid;
-    grid-template-columns:1fr 120px 1fr 80px 160px;
-    padding:12px 0;
-    border-bottom:1px solid #1f1f1f;
+    grid-template-columns:90px 1fr 70px 1fr 160px 200px;
+    gap:10px;
+    padding:14px 12px;
+    border-bottom:1px solid var(--line);
     align-items:center;
+    transition:.2s;
 }
 
-.group{
-    color:#ffcc00;
-    font-size:12px;
+.fixture:hover{
+    background:#0f1a25;
+}
+
+.group-tag{
+    font-size:11px;
+    color:var(--gold);
+    font-weight:600;
 }
 
 .team{
     display:flex;
     align-items:center;
     gap:10px;
+    font-weight:500;
 }
 
 .team img{
-    width:22px;
+    width:20px;
+    height:14px;
+    border-radius:2px;
 }
 
-.mid{
+.vs{
     text-align:center;
-    color:#ffcc00;
-    font-weight:bold;
+    color:var(--muted);
+    font-weight:600;
 }
 
 .time{
-    color:#00d4ff;
+    color:var(--accent);
+    font-weight:600;
     text-align:center;
 }
 
 .venue{
-    color:#aaa;
+    color:var(--muted);
     font-size:13px;
 }
 
+/* ===== RESPONSIVE ===== */
 @media(max-width:900px){
     .fixture{
         grid-template-columns:1fr;
         gap:6px;
+    }
+
+    .vs,.time{
+        text-align:left;
     }
 }
 </style>
@@ -136,57 +181,71 @@ header p{
 
 <!-- LIVE BAR -->
 <div class="live-bar">
-<div><span class="live-dot"></span> LIVE MATCH CENTER</div>
-<div>FIFA World Cup 2026</div>
+<div><span class="live-dot"></span> LIVE • FIFA WORLD CUP 2026 FIXTURE HUB</div>
+<div>Group Stage • All 48 Teams</div>
 </div>
 
 <header>
 <h1>FIFA WORLD CUP 2026</h1>
-<p>Fixtures grouped by date • Group Stage schedule</p>
+<p>Premium Fixture Dashboard • Group Stage (A–L) • Times • Venues • Flags</p>
 </header>
 
 <div class="search">
-<input id="search" placeholder="Search team, venue, group or date...">
+<input id="search" placeholder="Search team, group, venue, or date...">
 </div>
 
-<div id="container"></div>
+<div id="app"></div>
 
 <script>
 
-const data = [
+/* ===============================
+   FULL STRUCTURE READY FOR DATA
+   =============================== */
+
+const fixtures = [
+
+/* GROUP A */
 {
 date:"2026-06-11",
 matches:[
 ["Group A","Mexico","mx","South Africa","za","18:00","Estadio Azteca, Mexico City"],
-["Group B","Canada","ca","Switzerland","ch","21:00","BMO Field, Toronto"]
+["Group A","Canada","ca","Korea Republic","kr","21:00","BMO Field, Toronto"]
 ]
 },
 
+/* GROUP B */
 {
 date:"2026-06-12",
 matches:[
-["Group C","Brazil","br","Morocco","ma","18:00","MetLife Stadium, New York"],
-["Group D","USA","us","Paraguay","py","21:00","SoFi Stadium, Los Angeles"]
+["Group B","USA","us","Morocco","ma","18:00","SoFi Stadium, Los Angeles"],
+["Group B","Switzerland","ch","Qatar","qa","21:00","BC Place, Vancouver"]
 ]
 },
 
+/* GROUP C */
 {
 date:"2026-06-13",
 matches:[
-["Group E","Germany","de","Côte d'Ivoire","ci","18:00","AT&T Stadium, Dallas"],
-["Group F","Netherlands","nl","Japan","jp","21:00","Lumen Field, Seattle"]
+["Group C","Brazil","br","Scotland","gb-sct","18:00","MetLife Stadium, New York"],
+["Group C","Haiti","ht","Morocco","ma","21:00","AT&T Stadium, Dallas"]
 ]
 }
 
 ];
 
-function render(){
-const container=document.getElementById("container");
-container.innerHTML="";
+/* ===============================
+   RENDER FUNCTION
+   =============================== */
+
+function render(data){
+
+const app=document.getElementById("app");
+app.innerHTML="";
 
 data.forEach(day=>{
 
-let html=`<div class="date-section">
+let html=`
+<div class="date-section">
 <div class="date-title">📅 ${day.date}</div>
 `;
 
@@ -195,45 +254,51 @@ day.matches.forEach(m=>{
 html+=`
 <div class="fixture">
 
-<div class="group">${m[0]}</div>
+<div class="group-tag">${m[0]}</div>
 
 <div class="team">
 <img src="https://flagcdn.com/w20/${m[2]}.png">
 ${m[1]}
 </div>
 
-<div class="mid">VS</div>
+<div class="vs">VS</div>
 
 <div class="team">
 <img src="https://flagcdn.com/w20/${m[4]}.png">
 ${m[3]}
 </div>
 
-<div class="time">
-${m[5]} • ${m[6]}
-</div>
+<div class="time">${m[5]}</div>
+
+<div class="venue">${m[6]}</div>
 
 </div>
 `;
 });
 
-html+="</div>";
-container.innerHTML+=html;
+html+=`</div>`;
+app.innerHTML+=html;
+
 });
 
 }
 
-render();
+render(fixtures);
 
-/* SEARCH */
+/* ===============================
+   SEARCH FILTER
+   =============================== */
+
 document.getElementById("search").addEventListener("input",e=>{
+
 let q=e.target.value.toLowerCase();
 
-document.querySelectorAll(".date-section").forEach(section=>{
-section.style.display=
-section.innerText.toLowerCase().includes(q)
+document.querySelectorAll(".date-section").forEach(sec=>{
+sec.style.display=
+sec.innerText.toLowerCase().includes(q)
 ?"block":"none";
 });
+
 });
 
 </script>
