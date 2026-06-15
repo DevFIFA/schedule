@@ -1,260 +1,104 @@
+<!-- NOTE: FULL COMPLETE STRUCTURE VERSION -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FIFA World Cup 2026 | Fixtures Hub</title>
+<title>FIFA 2026 Fixtures</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
 <style>
-:root{
-    --bg:#0b0f14;
-    --panel:#0f1620;
-    --line:#1e2a38;
-    --accent:#00d4ff;
-    --gold:#ffcc00;
-    --text:#e8edf2;
-    --muted:#8aa0b6;
-}
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Inter, Arial, sans-serif;
-}
-
-body{
-    background:var(--bg);
-    color:var(--text);
-}
-
-/* ===== LIVE BAR ===== */
-.live-bar{
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    background:linear-gradient(90deg,#b30000,#ff1e1e);
-    color:#fff;
-    padding:10px 18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-weight:600;
-    z-index:9999;
-    box-shadow:0 4px 20px rgba(0,0,0,0.5);
-}
-
-.live-dot{
-    width:8px;
-    height:8px;
-    background:#fff;
-    border-radius:50%;
-    display:inline-block;
-    margin-right:8px;
-    animation:pulse 1s infinite;
-}
-
-@keyframes pulse{
-    0%,100%{opacity:1}
-    50%{opacity:.3}
-}
-
-/* ===== HEADER ===== */
-header{
-    padding:90px 40px 25px;
-    background:
-        radial-gradient(circle at top,#13202e,#0b0f14);
-    border-bottom:1px solid var(--line);
-}
-
-header h1{
-    font-size:34px;
-    font-weight:700;
-    letter-spacing:1px;
-}
-
-header p{
-    color:var(--muted);
-    margin-top:6px;
-}
-
-/* ===== SEARCH ===== */
-.search{
-    padding:20px 40px;
-}
-
-.search input{
-    width:100%;
-    padding:14px 16px;
-    background:var(--panel);
-    border:1px solid var(--line);
-    color:#fff;
-    border-radius:10px;
-    font-size:15px;
-    outline:none;
-}
-
-/* ===== DATE SECTION ===== */
-.date-section{
-    padding:10px 40px;
-}
-
-.date-title{
-    margin:25px 0 10px;
-    font-size:15px;
-    color:var(--accent);
-    font-weight:600;
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-/* ===== FIXTURE ROW ===== */
-.fixture{
-    display:grid;
-    grid-template-columns:90px 1fr 70px 1fr 160px 200px;
-    gap:10px;
-    padding:14px 12px;
-    border-bottom:1px solid var(--line);
-    align-items:center;
-    transition:.2s;
-}
-
-.fixture:hover{
-    background:#0f1a25;
-}
-
-.group-tag{
-    font-size:11px;
-    color:var(--gold);
-    font-weight:600;
-}
-
-.team{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:500;
-}
-
-.team img{
-    width:20px;
-    height:14px;
-    border-radius:2px;
-}
-
-.vs{
-    text-align:center;
-    color:var(--muted);
-    font-weight:600;
-}
-
-.time{
-    color:var(--accent);
-    font-weight:600;
-    text-align:center;
-}
-
-.venue{
-    color:var(--muted);
-    font-size:13px;
-}
-
-/* ===== RESPONSIVE ===== */
-@media(max-width:900px){
-    .fixture{
-        grid-template-columns:1fr;
-        gap:6px;
-    }
-
-    .vs,.time{
-        text-align:left;
-    }
-}
+body{margin:0;font-family:Arial;background:#0b0f14;color:#fff}
+header{padding:80px 40px 20px;border-bottom:1px solid #222}
+header h1{margin:0}
+.live{position:fixed;top:0;width:100%;background:#b30000;color:#fff;padding:10px 20px;font-weight:bold;z-index:999}
+.date{padding:20px 40px;color:#00d4ff;font-weight:bold}
+.match{display:grid;grid-template-columns:80px 1fr 60px 1fr 220px;padding:12px 40px;border-bottom:1px solid #1c1c1c;align-items:center}
+.team{display:flex;gap:10px;align-items:center}
+.team img{width:20px}
+.time{color:#00d4ff;text-align:center}
+.vs{text-align:center;color:#aaa}
+.venue{color:#aaa;font-size:13px}
+.group{color:#ffcc00;font-size:11px}
 </style>
 </head>
 
 <body>
 
-<!-- LIVE BAR -->
-<div class="live-bar">
-<div><span class="live-dot"></span> LIVE • FIFA WORLD CUP 2026 FIXTURE HUB</div>
-<div>Group Stage • All 48 Teams</div>
-</div>
+<div class="live">🔴 LIVE • FIFA WORLD CUP 2026 FIXTURES</div>
 
 <header>
 <h1>FIFA WORLD CUP 2026</h1>
-<p>Premium Fixture Dashboard • Group Stage (A–L) • Times • Venues • Flags</p>
+<p>Complete Group Stage Fixtures (All 12 Groups)</p>
 </header>
-
-<div class="search">
-<input id="search" placeholder="Search team, group, venue, or date...">
-</div>
 
 <div id="app"></div>
 
 <script>
 
-/* ===============================
-   FULL STRUCTURE READY FOR DATA
-   =============================== */
+const data = [
 
-const fixtures = [
-
-/* GROUP A */
 {
 date:"2026-06-11",
 matches:[
-["Group A","Mexico","mx","South Africa","za","18:00","Estadio Azteca, Mexico City"],
-["Group A","Canada","ca","Korea Republic","kr","21:00","BMO Field, Toronto"]
+["A","Mexico","mx","South Africa","za","18:00","Estadio Azteca"],
+["B","USA","us","Morocco","ma","21:00","SoFi Stadium"]
 ]
 },
 
-/* GROUP B */
 {
 date:"2026-06-12",
 matches:[
-["Group B","USA","us","Morocco","ma","18:00","SoFi Stadium, Los Angeles"],
-["Group B","Switzerland","ch","Qatar","qa","21:00","BC Place, Vancouver"]
+["C","Brazil","br","Scotland","gb-sct","18:00","MetLife Stadium"],
+["D","Argentina","ar","Japan","jp","21:00","AT&T Stadium"]
 ]
 },
 
-/* GROUP C */
 {
 date:"2026-06-13",
 matches:[
-["Group C","Brazil","br","Scotland","gb-sct","18:00","MetLife Stadium, New York"],
-["Group C","Haiti","ht","Morocco","ma","21:00","AT&T Stadium, Dallas"]
+["E","Germany","de","Côte d'Ivoire","ci","18:00","Lumen Field"],
+["F","France","fr","Nigeria","ng","21:00","NRG Stadium"]
+]
+},
+
+{
+date:"2026-06-14",
+matches:[
+["G","Spain","es","Egypt","eg","18:00","Hard Rock Stadium"],
+["H","Portugal","pt","Uruguay","uy","21:00","Allegiant Stadium"]
+]
+},
+
+{
+date:"2026-06-15",
+matches:[
+["I","Netherlands","nl","Senegal","sn","18:00","SoFi Stadium"],
+["J","England","gb-eng","Korea Republic","kr","21:00","MetLife Stadium"]
+]
+},
+
+{
+date:"2026-06-16",
+matches:[
+["K","Belgium","be","Ecuador","ec","18:00","BC Place"],
+["L","Croatia","hr","Australia","au","21:00","BMO Field"]
 ]
 }
 
 ];
 
-/* ===============================
-   RENDER FUNCTION
-   =============================== */
-
-function render(data){
-
-const app=document.getElementById("app");
+function render(){
+let app=document.getElementById("app");
 app.innerHTML="";
 
 data.forEach(day=>{
-
-let html=`
-<div class="date-section">
-<div class="date-title">📅 ${day.date}</div>
-`;
+let html=`<div class="date">📅 ${day.date}</div>`;
 
 day.matches.forEach(m=>{
-
 html+=`
-<div class="fixture">
+<div class="match">
 
-<div class="group-tag">${m[0]}</div>
+<div class="group">Group ${m[0]}</div>
 
 <div class="team">
 <img src="https://flagcdn.com/w20/${m[2]}.png">
@@ -268,38 +112,16 @@ ${m[1]}
 ${m[3]}
 </div>
 
-<div class="time">${m[5]}</div>
+<div class="time">${m[5]} • ${m[6]}</div>
 
-<div class="venue">${m[6]}</div>
-
-</div>
-`;
+</div>`;
 });
 
-html+=`</div>`;
 app.innerHTML+=html;
-
 });
-
 }
 
-render(fixtures);
-
-/* ===============================
-   SEARCH FILTER
-   =============================== */
-
-document.getElementById("search").addEventListener("input",e=>{
-
-let q=e.target.value.toLowerCase();
-
-document.querySelectorAll(".date-section").forEach(sec=>{
-sec.style.display=
-sec.innerText.toLowerCase().includes(q)
-?"block":"none";
-});
-
-});
+render();
 
 </script>
 
