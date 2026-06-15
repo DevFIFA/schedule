@@ -3,195 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FIFA World Cup 2026</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>FIFA World Cup 2026 Schedule</title>
 
 <style>
+:root{
+    --bg:#0a0a0a;
+    --panel:#111;
+    --border:#242424;
+    --accent:#ffcc00;
+    --text:#f4f4f4;
+    --muted:#999;
+}
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
 }
 
 body{
-    background:#0b1220;
-    color:white;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial,sans-serif;
 }
 
 header{
-    height:100vh;
-    background:
-        linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.7)),
-        url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1800&q=80');
-    background-size:cover;
-    background-position:center;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
+    background:#000;
+    border-bottom:2px solid var(--accent);
+    padding:25px 40px;
 }
 
 header h1{
-    font-size:4rem;
-    color:#fff;
-    text-shadow:0 0 20px #00d4ff;
+    font-size:32px;
 }
 
-header p{
-    margin-top:15px;
-    font-size:1.2rem;
-    max-width:800px;
+.hero{
+    padding:30px 40px;
 }
 
-.btn{
-    margin-top:30px;
-    padding:15px 35px;
-    background:#00d4ff;
-    color:black;
-    border:none;
-    border-radius:30px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-nav{
-    position:sticky;
-    top:0;
-    z-index:1000;
-    background:#111827;
-    padding:15px;
-}
-
-nav ul{
-    display:flex;
-    justify-content:center;
-    gap:25px;
-    list-style:none;
-}
-
-nav a{
+.search{
+    width:100%;
+    padding:14px;
+    background:#1a1a1a;
     color:white;
-    text-decoration:none;
-    font-weight:600;
-}
-
-section{
-    padding:80px 8%;
+    border:1px solid #333;
 }
 
 .section-title{
-    text-align:center;
-    margin-bottom:50px;
+    margin:30px 40px 10px;
+    font-size:22px;
+    color:var(--accent);
 }
 
-.section-title h2{
-    font-size:2.5rem;
-    color:#00d4ff;
-}
-
-.hosts{
+.fixture-header,
+.fixture-row{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:25px;
+    grid-template-columns:
+    110px
+    1fr
+    100px
+    1fr
+    250px
+    140px;
+    align-items:center;
 }
 
-.card{
-    background:#111827;
-    padding:25px;
-    border-radius:20px;
-    transition:.3s;
+.fixture-header{
+    background:#161616;
+    padding:14px 40px;
+    font-weight:bold;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
 }
 
-.card:hover{
-    transform:translateY(-10px);
-    box-shadow:0 0 20px rgba(0,212,255,.3);
+.fixture-row{
+    padding:18px 40px;
+    border-bottom:1px solid var(--border);
 }
 
-.groups{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:25px;
-}
-
-.group-box{
-    background:#111827;
-    padding:20px;
-    border-radius:15px;
-}
-
-.group-box h3{
-    color:#00d4ff;
-    margin-bottom:15px;
+.fixture-row:hover{
+    background:#141414;
 }
 
 .team{
     display:flex;
     align-items:center;
-    margin:10px 0;
+    gap:10px;
 }
 
 .team img{
-    width:30px;
-    margin-right:10px;
+    width:28px;
 }
 
-.schedule-search{
-    margin-bottom:25px;
+.time{
     text-align:center;
+    color:var(--accent);
+    font-weight:bold;
 }
 
-.schedule-search input{
-    width:100%;
-    max-width:500px;
-    padding:14px;
-    border:none;
-    border-radius:30px;
+.venue{
+    color:#ccc;
 }
 
-.fixture-table{
-    width:100%;
-    border-collapse:collapse;
-    overflow:hidden;
+.score{
+    text-align:right;
+    font-weight:bold;
 }
 
-.fixture-table th{
-    background:#00d4ff;
-    color:black;
-}
-
-.fixture-table th,
-.fixture-table td{
-    padding:14px;
-    text-align:center;
-    border-bottom:1px solid #2a3449;
-}
-
-.fixture-table tr:hover{
-    background:#162033;
-}
-
-footer{
-    background:#111827;
-    text-align:center;
-    padding:30px;
-    margin-top:50px;
-}
-
-@media(max-width:768px){
-    header h1{
-        font-size:2.5rem;
+@media(max-width:900px){
+    .fixture-header,
+    .fixture-row{
+        grid-template-columns:1fr;
+        gap:8px;
     }
 
-    nav ul{
-        flex-wrap:wrap;
-    }
-
-    .fixture-table{
-        display:block;
-        overflow-x:auto;
+    .score{
+        text-align:left;
     }
 }
 </style>
@@ -199,153 +126,117 @@ footer{
 <body>
 
 <header>
-    <h1>FIFA WORLD CUP 2026</h1>
-    <p>Official Tournament Hub • Teams • Groups • Fixtures • Match Schedule • Host Cities</p>
-    <button class="btn">View Fixtures</button>
+<h1>FIFA WORLD CUP 2026</h1>
+<p>All Fixtures • Teams • Results</p>
 </header>
 
-<nav>
-<ul>
-<li><a href="#hosts">Hosts</a></li>
-<li><a href="#groups">Groups</a></li>
-<li><a href="#teams">Teams</a></li>
-<li><a href="#schedule">Schedule</a></li>
-</ul>
-</nav>
-
-<section id="hosts">
-<div class="section-title">
-<h2>Host Nations</h2>
+<div class="hero">
+<input class="search" placeholder="Search team...">
 </div>
 
-<div class="hosts">
-<div class="card">
-<h3>🇺🇸 United States</h3>
-<p>Primary host nation with multiple venues.</p>
+<h2 class="section-title">MATCH SCHEDULE</h2>
+
+<div class="fixture-header">
+<div>Date</div>
+<div>Home</div>
+<div>Time</div>
+<div>Away</div>
+<div>Venue</div>
+<div>Score</div>
 </div>
 
-<div class="card">
-<h3>🇨🇦 Canada</h3>
-<p>Hosting matches across major stadiums.</p>
-</div>
-
-<div class="card">
-<h3>🇲🇽 Mexico</h3>
-<p>Historic third World Cup hosting role.</p>
-</div>
-</div>
-</section>
-
-<section id="groups">
-<div class="section-title">
-<h2>Groups</h2>
-<p>Replace with official FIFA groups when announced.</p>
-</div>
-
-<div class="groups">
-
-<div class="group-box">
-<h3>Group A</h3>
-<div class="team">🏳️ Team 1</div>
-<div class="team">🏳️ Team 2</div>
-<div class="team">🏳️ Team 3</div>
-<div class="team">🏳️ Team 4</div>
-</div>
-
-<div class="group-box">
-<h3>Group B</h3>
-<div class="team">🏳️ Team 1</div>
-<div class="team">🏳️ Team 2</div>
-<div class="team">🏳️ Team 3</div>
-<div class="team">🏳️ Team 4</div>
-</div>
-
-<div class="group-box">
-<h3>Group C</h3>
-<div class="team">🏳️ Team 1</div>
-<div class="team">🏳️ Team 2</div>
-<div class="team">🏳️ Team 3</div>
-<div class="team">🏳️ Team 4</div>
-</div>
-
-</div>
-</section>
-
-<section id="schedule">
-<div class="section-title">
-<h2>Match Schedule</h2>
-<p>Insert official FIFA 2026 fixtures when released.</p>
-</div>
-
-<div class="schedule-search">
-<input type="text" id="searchInput"
-placeholder="Search team...">
-</div>
-
-<table class="fixture-table" id="fixtureTable">
-<thead>
-<tr>
-<th>Match</th>
-<th>Group</th>
-<th>Date</th>
-<th>Time</th>
-<th>Venue</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>🇺🇸 USA vs 🇨🇦 Canada</td>
-<td>A</td>
-<td>TBD</td>
-<td>TBD</td>
-<td>New York</td>
-</tr>
-
-<tr>
-<td>🇲🇽 Mexico vs 🇧🇷 Brazil</td>
-<td>B</td>
-<td>TBD</td>
-<td>TBD</td>
-<td>Mexico City</td>
-</tr>
-
-<tr>
-<td>🇦🇷 Argentina vs 🇫🇷 France</td>
-<td>C</td>
-<td>TBD</td>
-<td>TBD</td>
-<td>Los Angeles</td>
-</tr>
-</tbody>
-</table>
-</section>
-
-<footer>
-<p>FIFA World Cup 2026 Fan Portal</p>
-</footer>
+<div id="fixtures"></div>
 
 <script>
-const searchInput =
-document.getElementById("searchInput");
 
-searchInput.addEventListener("keyup", function(){
+const fixtures = [
 
-let filter =
-searchInput.value.toLowerCase();
+{
+date:"Jun 11",
+home:"Mexico",
+homeFlag:"https://flagcdn.com/w40/mx.png",
+away:"South Africa",
+awayFlag:"https://flagcdn.com/w40/za.png",
+time:"15:00 ET",
+venue:"Estadio Azteca",
+score:"2 - 0"
+},
 
-let rows =
-document.querySelectorAll("#fixtureTable tbody tr");
+{
+date:"Jun 12",
+home:"Canada",
+homeFlag:"https://flagcdn.com/w40/ca.png",
+away:"Bosnia & Herzegovina",
+awayFlag:"https://flagcdn.com/w40/ba.png",
+time:"15:00 ET",
+venue:"BMO Field",
+score:"1 - 1"
+},
 
-rows.forEach(row => {
+{
+date:"Jun 12",
+home:"United States",
+homeFlag:"https://flagcdn.com/w40/us.png",
+away:"Paraguay",
+awayFlag:"https://flagcdn.com/w40/py.png",
+time:"21:00 ET",
+venue:"SoFi Stadium",
+score:"4 - 1"
+},
 
-let text =
-row.innerText.toLowerCase();
+{
+date:"Jun 13",
+home:"Brazil",
+homeFlag:"https://flagcdn.com/w40/br.png",
+away:"Morocco",
+awayFlag:"https://flagcdn.com/w40/ma.png",
+time:"18:00 ET",
+venue:"MetLife Stadium",
+score:"Upcoming"
+},
 
-row.style.display =
-text.includes(filter) ? "" : "none";
+{
+date:"Jun 13",
+home:"Scotland",
+homeFlag:"https://flagcdn.com/w40/gb-sct.png",
+away:"Haiti",
+awayFlag:"https://flagcdn.com/w40/ht.png",
+time:"21:00 ET",
+venue:"Gillette Stadium",
+score:"1 - 0"
+}
+
+];
+
+const container = document.getElementById("fixtures");
+
+fixtures.forEach(match => {
+
+container.innerHTML += `
+<div class="fixture-row">
+
+<div>${match.date}</div>
+
+<div class="team">
+<img src="${match.homeFlag}">
+${match.home}
+</div>
+
+<div class="time">${match.time}</div>
+
+<div class="team">
+<img src="${match.awayFlag}">
+${match.away}
+</div>
+
+<div class="venue">${match.venue}</div>
+
+<div class="score">${match.score}</div>
+
+</div>
+`;
 });
-});
+
 </script>
 
 </body>
